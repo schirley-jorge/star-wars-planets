@@ -1,10 +1,10 @@
 package com.b2w.starwarsplanets.controllers;
 
 import com.b2w.starwarsplanets.models.Planet;
-import com.b2w.starwarsplanets.services.PlanetService;
+import com.b2w.starwarsplanets.services.IPlanetService;
+import com.b2w.starwarsplanets.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,35 +15,34 @@ import java.util.List;
 @RequestMapping("/api/planets")
 public class PlanetController {
 
-    @Autowired
-    private PlanetService planetService;
+    private final IPlanetService service;
+
+    public PlanetController(IPlanetService service) {
+        this.service = service;
+    }
 
     @PostMapping
-    public ResponseEntity<Planet> create(@RequestBody final Planet planet) {
-        if (planet.getName() == null || planet.getClimate() == null || planet.getTerrain() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required parameter");
-        }
+    @ResponseStatus(HttpStatus.CREATED)
+    public Planet create(@RequestBody final Planet resource) {
+        ValidationUtil.checkIsValid(resource);
+//        ValidationUtil.checkAlreadyExists(service.getByName(resource.getName()));
         try {
-            Planet planetCreated = planetService.createPlanet(planet);
-
-            return new ResponseEntity<Planet>(planetCreated, HttpStatus.CREATED);
+            return service.createPlanet(resource);
         } catch(Exception e) { // verifica as exceções enviadas pelo serviço, cada uma
-            String errorMessage = String.format("Planet [%s] already exist", planet.getName());
-            throw new ResponseStatusException(HttpStatus.FOUND, errorMessage);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error on creating planet");
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<Planet>> getAllPlanets() {
-        List<Planet> planets = new ArrayList<Planet>(); // usar paginação
-
-        return new ResponseEntity<List<Planet>>(planets, HttpStatus.OK);
+    public List<Planet> getAllPlanets() {
+        // usar paginação
+        return service.listPlanets();
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> delete(@PathVariable Long id) {
-        boolean result = planetService.deletePlanet(id);
-        return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean delete(@PathVariable Long id) {
+        return service.deletePlanet(id);
     }
 
 }
