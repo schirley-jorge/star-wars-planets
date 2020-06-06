@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -18,13 +18,13 @@ public class Planet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
+//    @NotNull
     private String name;
 
-    @NotNull
+//    @NotNull
     private String climate;
 
-    @NotNull
+//    @NotNull
     private String terrain;
 
     private int films;

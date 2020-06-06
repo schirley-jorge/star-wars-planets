@@ -1,28 +1,28 @@
 package com.b2w.starwarsplanets.util;
 
 import com.b2w.starwarsplanets.exceptions.BadRequestException;
+import com.b2w.starwarsplanets.exceptions.PlanetAlreadyExistException;
 import com.b2w.starwarsplanets.exceptions.PlanetNotFoundException;
 import com.b2w.starwarsplanets.models.Planet;
 
 public class ValidationUtil {
-    public static Planet checkNotNull(Planet resource) {
+    public static Planet checkFound(Planet resource) {
         if (resource == null) {
             throw new PlanetNotFoundException();
         }
         return resource;
     }
 
-    public static Planet checkIsValid(Planet resource) {
-        if (resource.getName() == null || resource.getClimate() == null || resource.getTerrain() == null) {
+    public static void checkIsValid(Planet resource) {
+        if (resource == null || resource.getName() == null || resource.getClimate() == null || resource.getTerrain() == null) {
             throw new BadRequestException();
         }
-        return resource;
     }
 
-    public static Planet checkAlreadyExists(Planet resource) {
+    public static void checkAlreadyExists(Planet resource) {
         if (resource != null) {
-            throw new PlanetNotFoundException();
+            String message = String.format("Planet [%s] already exist", resource.getName());
+            throw new PlanetAlreadyExistException(message);
         }
-        return resource;
     }
 }

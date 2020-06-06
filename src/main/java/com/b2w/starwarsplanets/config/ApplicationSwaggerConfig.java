@@ -16,7 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @Configuration
 @EnableSwagger2WebMvc
-@Import({SpringDataRestConfiguration.class, BeanValidatorPluginsConfiguration.class})
+//@Import({SpringDataRestConfiguration.class, BeanValidatorPluginsConfiguration.class})
+@Import(SpringDataRestConfiguration.class)
 public class ApplicationSwaggerConfig {
 
     @Bean

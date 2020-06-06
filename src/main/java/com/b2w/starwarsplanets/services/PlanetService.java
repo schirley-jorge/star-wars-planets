@@ -25,8 +25,13 @@ public class PlanetService implements IPlanetService {
     }
 
     @Override
-    public Planet findPlanet(long id) {
-        return new Planet();
+    public Planet findById(long id) {
+        return null;
+    }
+
+    @Override
+    public Planet findByName(String name) {
+        return null;
     }
 
     @Override

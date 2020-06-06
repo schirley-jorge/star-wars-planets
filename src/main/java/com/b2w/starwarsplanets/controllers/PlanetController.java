@@ -3,12 +3,10 @@ package com.b2w.starwarsplanets.controllers;
 import com.b2w.starwarsplanets.models.Planet;
 import com.b2w.starwarsplanets.services.IPlanetService;
 import com.b2w.starwarsplanets.util.ValidationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,7 +23,8 @@ public class PlanetController {
     @ResponseStatus(HttpStatus.CREATED)
     public Planet create(@RequestBody final Planet resource) {
         ValidationUtil.checkIsValid(resource);
-//        ValidationUtil.checkAlreadyExists(service.getByName(resource.getName()));
+        ValidationUtil.checkAlreadyExists(service.findByName(resource.getName()));
+
         try {
             return service.createPlanet(resource);
         } catch(Exception e) { // verifica as exceções enviadas pelo serviço, cada uma
@@ -39,10 +38,14 @@ public class PlanetController {
         return service.listPlanets();
     }
 
+    @GetMapping(value = "/{id}")
+    public Planet getById(@PathVariable("id") Long id) {
+        return ValidationUtil.checkFound(service.findById(id));
+    }
+
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public boolean delete(@PathVariable Long id) {
         return service.deletePlanet(id);
     }
-
 }

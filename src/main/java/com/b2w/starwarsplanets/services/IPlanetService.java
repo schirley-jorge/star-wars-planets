@@ -7,6 +7,7 @@ import java.util.List;
 public interface IPlanetService {
     Planet createPlanet(Planet planet);
     List<Planet> listPlanets();
-    Planet findPlanet(long id);
-    boolean deletePlanet(long id); // ou retornar um boolean
+    Planet findById(long id);
+    Planet findByName(String name);
+    boolean deletePlanet(long id);
 }
