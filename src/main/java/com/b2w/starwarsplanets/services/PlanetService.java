@@ -1,6 +1,8 @@
 package com.b2w.starwarsplanets.services;
 
 import com.b2w.starwarsplanets.models.Planet;
+import com.b2w.starwarsplanets.repositories.PlanetUserMongoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,6 +10,12 @@ import java.util.List;
 
 @Service
 public class PlanetService implements IPlanetService {
+    @Autowired
+    private PlanetUserMongoRepository mongoRepository;
+
+    public PlanetService() {
+
+    }
 
     public Planet createPlanet(Planet planet) {
         // verifica se o planet já existe e retorna erro caso positivo
@@ -16,7 +24,9 @@ public class PlanetService implements IPlanetService {
 
         // salva o planeta no banco
 
-        return planet;
+        Planet s = this.mongoRepository.save(planet);
+
+        return s;
     }
 
     @Override

@@ -1,22 +1,18 @@
 package com.b2w.starwarsplanets.models;
 
-import org.hibernate.annotations.UpdateTimestamp;
+//import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Column;
 //import javax.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity(name = "planets")
+//@Entity(name = "planets")
 public class Planet {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
 
 //    @NotNull
     private String name;
@@ -29,18 +25,18 @@ public class Planet {
 
     private int films;
 
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+//    @Column(name = "updated_at")
+//    @UpdateTimestamp
+//    private LocalDateTime updatedAt;
 
     public Planet() {
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -76,13 +72,13 @@ public class Planet {
         this.films = films;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+//    public LocalDateTime getUpdatedAt() {
+//        return updatedAt;
+//    }
+//
+//    public void setUpdatedAt(LocalDateTime updatedAt) {
+//        this.updatedAt = updatedAt;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -93,13 +89,13 @@ public class Planet {
                 films == planet.films &&
                 Objects.equals(name, planet.name) &&
                 Objects.equals(climate, planet.climate) &&
-                Objects.equals(terrain, planet.terrain) &&
-                Objects.equals(updatedAt, planet.updatedAt);
+                Objects.equals(terrain, planet.terrain); //&&
+//                Objects.equals(updatedAt, planet.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, climate, terrain, films, updatedAt);
+        return Objects.hash(id, name, climate, terrain, films/*, updatedAt*/);
     }
 
     @Override
@@ -110,7 +106,7 @@ public class Planet {
                 ", climate='" + climate + '\'' +
                 ", terrain='" + terrain + '\'' +
                 ", films=" + films +
-                ", updatedAt=" + updatedAt +
+//                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

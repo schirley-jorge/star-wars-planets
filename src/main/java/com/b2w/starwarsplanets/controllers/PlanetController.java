@@ -3,6 +3,8 @@ package com.b2w.starwarsplanets.controllers;
 import com.b2w.starwarsplanets.models.Planet;
 import com.b2w.starwarsplanets.services.IPlanetService;
 import com.b2w.starwarsplanets.util.ValidationUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/planets")
 public class PlanetController {
+    private static final Logger log = LoggerFactory.getLogger(PlanetController.class);
 
     private final IPlanetService service;
 
@@ -28,6 +31,7 @@ public class PlanetController {
         try {
             return service.createPlanet(resource);
         } catch(Exception e) { // verifica as exceções enviadas pelo serviço, cada uma
+            log.error("Error on creating planet", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error on creating planet");
         }
     }

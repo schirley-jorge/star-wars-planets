@@ -70,7 +70,7 @@ class PlanetControllerUnitTest {
             resource.setTerrain("Dessert");
 
             Planet expectedPlanet = new Planet();
-            expectedPlanet.setId(1L);
+            expectedPlanet.setId("tsgssfsf");
             expectedPlanet.setName(resource.getName());
             expectedPlanet.setClimate(resource.getClimate());
             expectedPlanet.setTerrain(resource.getTerrain());
