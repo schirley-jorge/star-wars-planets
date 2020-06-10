@@ -1,11 +1,13 @@
 package com.b2w.starwarsplanets.controllers;
 
+import com.b2w.starwarsplanets.exceptions.PlanetAlreadyExistException;
 import com.b2w.starwarsplanets.models.Planet;
 import com.b2w.starwarsplanets.services.IPlanetService;
 import com.b2w.starwarsplanets.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,13 +26,15 @@ public class PlanetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Planet create(@RequestBody final Planet resource) {
+    public Planet create(@NonNull @RequestBody final Planet resource) {
         ValidationUtil.checkIsValid(resource);
-        ValidationUtil.checkAlreadyExists(service.findByName(resource.getName()));
 
         try {
             return service.createPlanet(resource);
-        } catch(Exception e) { // verifica as exceções enviadas pelo serviço, cada uma
+        } catch (PlanetAlreadyExistException e) {
+            log.error(e.getMessage(), e);
+            throw e;
+        } catch(Exception e) {
             log.error("Error on creating planet", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error on creating planet");
         }
@@ -43,13 +47,13 @@ public class PlanetController {
     }
 
     @GetMapping(value = "/{id}")
-    public Planet getById(@PathVariable("id") Long id) {
+    public Planet getById(@PathVariable("id") String id) {
         return ValidationUtil.checkFound(service.findById(id));
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public boolean delete(@PathVariable Long id) {
-        return service.deletePlanet(id);
+    public void delete(@PathVariable String id) {
+        service.deletePlanet(id);
     }
 }

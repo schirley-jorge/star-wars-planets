@@ -1,33 +1,31 @@
 package com.b2w.starwarsplanets.models;
 
-//import org.hibernate.annotations.UpdateTimestamp;
-
 //import javax.validation.constraints.NotNull;
+import com.mongodb.lang.Nullable;
+import com.mongodb.lang.NonNull;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
-//@Entity(name = "planets")
+@Document(collection = "planets")
 public class Planet {
     @Id
     private String id;
 
-//    @NotNull
+    @Nullable
+    @Indexed(unique = true)
     private String name;
 
-//    @NotNull
+    @NonNull
     private String climate;
 
-//    @NotNull
+    @NonNull
     private String terrain;
 
     private int films;
-
-//    @Column(name = "updated_at")
-//    @UpdateTimestamp
-//    private LocalDateTime updatedAt;
 
     public Planet() {
     }
@@ -72,14 +70,6 @@ public class Planet {
         this.films = films;
     }
 
-//    public LocalDateTime getUpdatedAt() {
-//        return updatedAt;
-//    }
-//
-//    public void setUpdatedAt(LocalDateTime updatedAt) {
-//        this.updatedAt = updatedAt;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,8 +79,7 @@ public class Planet {
                 films == planet.films &&
                 Objects.equals(name, planet.name) &&
                 Objects.equals(climate, planet.climate) &&
-                Objects.equals(terrain, planet.terrain); //&&
-//                Objects.equals(updatedAt, planet.updatedAt);
+                Objects.equals(terrain, planet.terrain);
     }
 
     @Override
@@ -106,7 +95,6 @@ public class Planet {
                 ", climate='" + climate + '\'' +
                 ", terrain='" + terrain + '\'' +
                 ", films=" + films +
-//                ", updatedAt=" + updatedAt +
                 '}';
     }
 }
