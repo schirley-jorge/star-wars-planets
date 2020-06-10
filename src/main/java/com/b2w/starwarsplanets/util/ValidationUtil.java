@@ -14,12 +14,14 @@ public class ValidationUtil {
     }
 
     public static void checkIsValid(Planet resource) {
-        if (resource == null || resource.getName() == null || resource.getClimate() == null || resource.getTerrain() == null) {
+        if ((resource.getName() == null)
+                || (resource.getClimate() == null)
+                || (resource.getTerrain() == null)) {
             throw new BadRequestException();
         }
     }
 
-    public static void checkAlreadyExists(Planet resource) {
+    public static void checkAlreadyExist(Planet resource) {
         if (resource != null) {
             String message = String.format("Planet [%s] already exist", resource.getName());
             throw new PlanetAlreadyExistException(message);
