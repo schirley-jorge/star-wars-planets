@@ -24,16 +24,14 @@ public class ValidationUtil {
 
     public static void checkAlreadyExist(Planet resource) {
         if (resource != null) {
-            String message = String.format("Planet [%s] already exist", resource.getName());
-            throw new PlanetAlreadyExistException(message);
+            throw new PlanetAlreadyExistException();
         }
     }
 
     public static void validateSearchByParam(String searchBy) {
         PlanetSearchType searchType = PlanetSearchType.get(searchBy);
 
-        if ((searchType != PlanetSearchType.BY_ID)
-                && (searchType != PlanetSearchType.BY_NAME)) {
+        if ((searchType != PlanetSearchType.BY_ID) && (searchType != PlanetSearchType.BY_NAME)) {
             throw new BadRequestException();
         }
     }

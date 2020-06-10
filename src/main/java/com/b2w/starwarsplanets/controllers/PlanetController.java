@@ -29,15 +29,7 @@ public class PlanetController {
     public Planet create(@NonNull @RequestBody final Planet resource) {
         ValidationUtil.checkIsValid(resource);
 
-        try {
-            return service.createPlanet(resource);
-        } catch (PlanetAlreadyExistException e) {
-            log.error(e.getMessage(), e);
-            throw e;
-        } catch(Exception e) {
-            log.error("Error on creating planet", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error on creating planet");
-        }
+        return service.createPlanet(resource);
     }
 
     @GetMapping(params = { "page", "size" })
