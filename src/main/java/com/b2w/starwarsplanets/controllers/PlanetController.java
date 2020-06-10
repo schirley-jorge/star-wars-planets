@@ -1,17 +1,17 @@
 package com.b2w.starwarsplanets.controllers;
 
+import com.b2w.starwarsplanets.common.PlanetSearchType;
 import com.b2w.starwarsplanets.exceptions.PlanetAlreadyExistException;
 import com.b2w.starwarsplanets.models.Planet;
 import com.b2w.starwarsplanets.services.IPlanetService;
 import com.b2w.starwarsplanets.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/planets")
@@ -40,15 +40,24 @@ public class PlanetController {
         }
     }
 
-    @GetMapping
-    public List<Planet> getAllPlanets() {
-        // usar paginação
-        return service.listPlanets();
+    @GetMapping(params = { "page", "size" })
+    public Page<Planet> listPlanets(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
+
+        return service.listPlanets(page, size);
     }
 
-    @GetMapping(value = "/{id}")
-    public Planet getById(@PathVariable("id") String id) {
-        return ValidationUtil.checkFound(service.findById(id));
+    @GetMapping(value = "/search")
+    public Planet searchPlanet(@RequestParam String searchBy,
+                          @RequestParam String value) {
+        ValidationUtil.validateSearchByParam(searchBy);
+
+        if (PlanetSearchType.get(searchBy) == PlanetSearchType.BY_ID) {
+            return ValidationUtil.checkFound(service.findById(value));
+        }
+
+        return ValidationUtil.checkFound(service.findByName(value));
     }
 
     @DeleteMapping(value = "/{id}")

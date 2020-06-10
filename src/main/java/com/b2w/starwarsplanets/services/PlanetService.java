@@ -5,11 +5,13 @@ import com.b2w.starwarsplanets.repositories.PlanetUserMongoRepository;
 
 import com.b2w.starwarsplanets.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,8 +36,9 @@ public class PlanetService implements IPlanetService {
     }
 
     @Override
-    public List<Planet> listPlanets() {
-        return new ArrayList<Planet>();
+    public Page<Planet> listPlanets(int page, int size) {
+        Pageable paging = PageRequest.of(page, size, Sort.by("name"));
+        return mongoRepository.findAll(paging);
     }
 
     @Nullable @Override

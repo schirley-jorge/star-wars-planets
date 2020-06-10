@@ -1,13 +1,14 @@
 package com.b2w.starwarsplanets.services;
 
 import com.b2w.starwarsplanets.models.Planet;
+import org.springframework.data.domain.Page;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
 
 public interface IPlanetService {
     Planet createPlanet(Planet planet);
-    List<Planet> listPlanets();
+    Page<Planet> listPlanets(int page, int size);
     @Nullable
     Planet findById(String id);
     @Nullable

@@ -1,5 +1,6 @@
 package com.b2w.starwarsplanets.util;
 
+import com.b2w.starwarsplanets.common.PlanetSearchType;
 import com.b2w.starwarsplanets.exceptions.BadRequestException;
 import com.b2w.starwarsplanets.exceptions.PlanetAlreadyExistException;
 import com.b2w.starwarsplanets.exceptions.PlanetNotFoundException;
@@ -25,6 +26,15 @@ public class ValidationUtil {
         if (resource != null) {
             String message = String.format("Planet [%s] already exist", resource.getName());
             throw new PlanetAlreadyExistException(message);
+        }
+    }
+
+    public static void validateSearchByParam(String searchBy) {
+        PlanetSearchType searchType = PlanetSearchType.get(searchBy);
+
+        if ((searchType != PlanetSearchType.BY_ID)
+                && (searchType != PlanetSearchType.BY_NAME)) {
+            throw new BadRequestException();
         }
     }
 }
