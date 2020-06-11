@@ -19,7 +19,7 @@ docker-compose up -d
 ```sh
 ./mvnw spring-boot:run
 ```
-Or
+ou
 ```sh
 ./bin/star-wars-planets-0.0.1-SNAPSHOT.jar
 ```
@@ -39,6 +39,6 @@ mvn test
 - [JUnit 5](https://junit.org/junit5/docs/current/user-guide/)
 
 ## Documentação da API
-Acesse a especificação da API no Swagger no [link](http://localhost:8080/swagger-ui.html)
+Com a aplicação rodando, a especificação da API poderá ser acessada pelo [link](http://localhost:8080/swagger-ui.html)
 
 ## Algumas considerações:
