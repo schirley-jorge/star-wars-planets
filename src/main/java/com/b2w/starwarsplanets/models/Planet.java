@@ -4,10 +4,12 @@ package com.b2w.starwarsplanets.models;
 import com.mongodb.lang.Nullable;
 import com.mongodb.lang.NonNull;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Document(collection = "planets")
@@ -15,16 +17,15 @@ public class Planet {
     @Id
     private String id;
 
-    @Nullable
+    @NotNull
     @Indexed(unique = true)
     private String name;
 
-    @NonNull
     private String climate;
 
-    @NonNull
     private String terrain;
 
+    @ApiModelProperty(value = "Number of films that this planet has appeared in")
     private int films;
 
     public Planet() {

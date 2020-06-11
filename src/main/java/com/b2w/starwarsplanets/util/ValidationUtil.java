@@ -15,9 +15,7 @@ public class ValidationUtil {
     }
 
     public static void checkIsValid(Planet resource) {
-        if ((resource.getName() == null)
-                || (resource.getClimate() == null)
-                || (resource.getTerrain() == null)) {
+        if (resource.getName() == null) {
             throw new BadRequestException();
         }
     }
