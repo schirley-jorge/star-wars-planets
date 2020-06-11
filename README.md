@@ -42,3 +42,5 @@ mvn test
 Acesse a especificação da API no Swagger no [link](http://localhost:8080/swagger-ui.html)
 
 ## Algumas considerações:
+- A anotação **@Indexed(unique = true)** no nome do documento/entidade *Planet* não está funcionando, ou seja, o banco está permitindo salvar planetas com o mesmo nome, por essa razão foi necessário colocar verificação se o planeta já existe antes de salvar no MongoDB;
+- O **Jacoco** não está gerando o relatório de coverage, existe um conflito com o atributo *argLine* do surefire **<argLine>-Xmx1024m -XX:MaxPermSize=256m ${argLine}</argLine>** e isso impede a geração do relatório de *code coverage* formatado.
