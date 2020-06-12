@@ -5,6 +5,7 @@ import com.b2w.starwarsplanets.repositories.PlanetUserMongoRepository;
 
 import com.b2w.starwarsplanets.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +39,9 @@ public class PlanetService implements IPlanetService {
     @Override
     public Page<Planet> listPlanets(int page, int size) {
         Pageable paging = PageRequest.of(page, size, Sort.by("name"));
-        return mongoRepository.findAll(paging);
+        Page<Planet> result = mongoRepository.findAll(paging);
+
+        return result.map(planet -> setNumberOfFilms(planet));
     }
 
     @Nullable @Override
@@ -47,9 +50,8 @@ public class PlanetService implements IPlanetService {
 
         if (optional.isPresent()) {
             Planet planet = optional.get();
-            setNumberOfFilms(planet);
 
-            return planet;
+            return setNumberOfFilms(planet);
         }
 
         return null;
@@ -66,13 +68,16 @@ public class PlanetService implements IPlanetService {
         return planet;
     }
 
+    @CacheEvict(value = "planetFilms", allEntries=true)
     @Override
     public void deletePlanet(String id) {
         mongoRepository.deleteById(id);
     }
 
-    private void setNumberOfFilms(Planet planet) {
-        int films = starWarsAPIService.getNumberOfFilms(planet.getName());
+    private Planet setNumberOfFilms(Planet planet) {
+        int films = starWarsAPIService.getNumberOfFilms(planet);
         planet.setFilms(films);
+
+        return planet;
     }
 }

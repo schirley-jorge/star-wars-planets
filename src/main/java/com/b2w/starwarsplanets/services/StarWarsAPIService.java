@@ -1,5 +1,6 @@
 package com.b2w.starwarsplanets.services;
 
+import com.b2w.starwarsplanets.models.Planet;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +32,10 @@ public class StarWarsAPIService implements IStarWarsAPIService {
 
     }
 
+    @Cacheable(value = "planetFilms", key = "#planet.id")
     @Override
-    public int getNumberOfFilms(String planetName) {
-        return getNumberOfFilmsFromSWAPI(planetName);
+    public int getNumberOfFilms(Planet planet) {
+        return getNumberOfFilmsFromSWAPI(planet.getName());
     }
 
     private int getNumberOfFilmsFromSWAPI(String planetName) {
