@@ -37,7 +37,7 @@ public class PlanetService implements IPlanetService {
     }
 
     @Override
-    public Page<Planet> listPlanets(int page, int size) {
+    public Page<Planet> listPlanet(int page, int size) {
         Pageable paging = PageRequest.of(page, size, Sort.by("name"));
         Page<Planet> result = mongoRepository.findAll(paging);
 
@@ -62,10 +62,10 @@ public class PlanetService implements IPlanetService {
         Planet planet = mongoRepository.findByName(name);
 
         if (planet != null) {
-            setNumberOfFilms(planet);
+            return setNumberOfFilms(planet);
         }
 
-        return planet;
+        return null;
     }
 
     @CacheEvict(value = "planetFilms", allEntries=true)

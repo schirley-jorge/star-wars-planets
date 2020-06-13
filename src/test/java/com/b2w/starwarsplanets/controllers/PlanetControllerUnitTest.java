@@ -168,7 +168,7 @@ class PlanetControllerUnitTest {
             planet.setName("test");
 
             Page<Planet> pagedResponse = new PageImpl<>(Collections.singletonList(planet));
-            when(serviceMock.listPlanets(page, size)).thenReturn(pagedResponse);
+            when(serviceMock.listPlanet(page, size)).thenReturn(pagedResponse);
             mockMvc.perform(get(getUrl))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content[0].name").value(planet.getName()));
@@ -178,7 +178,7 @@ class PlanetControllerUnitTest {
     @DisplayName("Given a delete planet request")
     @Nested
     class deletePlanetTest {
-        @DisplayName("Should delete the planet from the database")
+        @DisplayName("Should delete planet successfully")
         @Test
         public void whenRequestDeleteShouldDeletePlanetFromDatabase() throws Exception {
             String id = "teste";

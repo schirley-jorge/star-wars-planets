@@ -37,7 +37,7 @@ public class PlanetController {
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size) {
 
-        return service.listPlanets(page, size);
+        return service.listPlanet(page, size);
     }
 
     @ApiOperation(value = "Search planet by name or id",

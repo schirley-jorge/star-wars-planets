@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IPlanetService {
     Planet createPlanet(Planet planet);
-    Page<Planet> listPlanets(int page, int size);
+    Page<Planet> listPlanet(int page, int size);
     @Nullable
     Planet findById(String id);
     @Nullable
