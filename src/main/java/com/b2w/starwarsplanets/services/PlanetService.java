@@ -1,7 +1,7 @@
 package com.b2w.starwarsplanets.services;
 
 import com.b2w.starwarsplanets.models.Planet;
-import com.b2w.starwarsplanets.repositories.PlanetUserMongoRepository;
+import com.b2w.starwarsplanets.repositories.PlanetMongoRepository;
 
 import com.b2w.starwarsplanets.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class PlanetService implements IPlanetService {
     @Autowired
-    private PlanetUserMongoRepository mongoRepository;
+    private PlanetMongoRepository mongoRepository;
 
     @Autowired
     private IStarWarsAPIService starWarsAPIService;

@@ -14,9 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -176,18 +174,6 @@ class PlanetControllerUnitTest {
                     .andExpect(jsonPath("$.content[0].name").value(planet.getName()));
         }
     }
-
-//    @Test
-//    public void getAllPlanetsSuccessfuly() throws Exception {
-//        List<Planet> expectedList = new ArrayList<Planet>();
-////        when(serviceMock.listPlanets()).thenReturn(expectedList);
-//
-//        mockMvc.perform(get("/api/planets"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json("[]"));
-//
-////        verify(serviceMock, times(1)).listPlanets();
-//    }
 
     @DisplayName("Given a delete planet request")
     @Nested
