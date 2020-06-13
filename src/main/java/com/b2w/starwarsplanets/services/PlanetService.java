@@ -75,7 +75,7 @@ public class PlanetService implements IPlanetService {
     }
 
     private Planet setNumberOfFilms(Planet planet) {
-        int films = starWarsAPIService.getNumberOfFilms(planet);
+        Integer films = starWarsAPIService.getNumberOfFilms(planet);
         planet.setFilms(films);
 
         return planet;

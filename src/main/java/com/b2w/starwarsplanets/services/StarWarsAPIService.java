@@ -32,13 +32,15 @@ public class StarWarsAPIService implements IStarWarsAPIService {
 
     }
 
-    @Cacheable(value = "planetFilms", key = "#planet.id")
+    @Nullable
+    @Cacheable(value = "planetFilms", key = "#planet.id", unless="#result == null")
     @Override
-    public int getNumberOfFilms(Planet planet) {
+    public Integer getNumberOfFilms(Planet planet) {
         return getNumberOfFilmsFromSWAPI(planet.getName());
     }
 
-    private int getNumberOfFilmsFromSWAPI(String planetName) {
+    @Nullable
+    private Integer getNumberOfFilmsFromSWAPI(String planetName) {
         String planet = getPlanetAsString(getEncodedUrl(planetName));
 
         return getFilmsFromPlanet(planet);
@@ -69,7 +71,8 @@ public class StarWarsAPIService implements IStarWarsAPIService {
         return null;
     }
 
-    private int getFilmsFromPlanet(String planetAsString) {
+    @Nullable
+    private Integer getFilmsFromPlanet(String planetAsString) {
         if (planetAsString != null) {
             try {
                 JSONObject planetJson = new JSONObject(planetAsString);
@@ -83,7 +86,7 @@ public class StarWarsAPIService implements IStarWarsAPIService {
             }
         }
 
-        return 0;
+        return null;
     }
 
     @Nullable

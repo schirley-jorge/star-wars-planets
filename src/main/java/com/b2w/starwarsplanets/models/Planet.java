@@ -26,7 +26,7 @@ public class Planet {
     private String terrain;
 
     @ApiModelProperty(value = "Number of films that this planet has appeared in")
-    private int films;
+    private Integer films;
 
     public Planet() {
     }
@@ -63,11 +63,11 @@ public class Planet {
         this.terrain = terrain;
     }
 
-    public int getFilms() {
+    public Integer getFilms() {
         return films;
     }
 
-    public void setFilms(int films) {
+    public void setFilms(Integer films) {
         this.films = films;
     }
 
