@@ -12,47 +12,47 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.IllegalFormatException;
 
 @Service
 public class StarWarsAPIService implements IStarWarsAPIService {
 
     private static final Logger log = LoggerFactory.getLogger(StarWarsAPIService.class);
 
-    @Value("${swapi.planet.search.url}")
-    private String url;
+    private final CloseableHttpClient httpClient;
+
+//    @Value("${swapi.planet.search.url}")
+    private static final String SWAPI_URL = "https://swapi.dev/api/planets/?search=%s";
 
     public StarWarsAPIService() {
+        this(HttpClients.createDefault());
+    }
 
+    public StarWarsAPIService(CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 
     @Nullable
     @Cacheable(value = "planetFilms", key = "#planet.id", unless="#result == null")
     @Override
     public Integer getNumberOfFilms(Planet planet) {
-        return getNumberOfFilmsFromSWAPI(planet.getName());
+        JSONObject planetJson = findPlanet(getEncodedUrl(planet.getName()));
+        return getFilmsFromPlanet(planetJson);
     }
 
     @Nullable
-    private Integer getNumberOfFilmsFromSWAPI(String planetName) {
-        String planet = getPlanetAsString(getEncodedUrl(planetName));
-
-        return getFilmsFromPlanet(planet);
-    }
-
-    @Nullable
-    private String getPlanetAsString(String url) {
+    private JSONObject findPlanet(String url) {
         if (url != null) {
-            try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-                HttpGet request = new HttpGet(url);
-                CloseableHttpResponse response = httpClient.execute(request);
+            HttpGet request = new HttpGet(url);
 
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
                 if (response.getStatusLine().getStatusCode() >= 300) {
                     log.error(String.format("Error: received %d for %s.",
                             response.getStatusLine().getStatusCode(), request.getURI().toString()));
@@ -61,7 +61,8 @@ public class StarWarsAPIService implements IStarWarsAPIService {
 
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
-                    return EntityUtils.toString(entity);
+                    String result = EntityUtils.toString(entity);
+                    return new JSONObject(result);
                 }
             } catch (Exception e) {
                 log.error("Error to get planet from SWAPI", e);
@@ -72,10 +73,9 @@ public class StarWarsAPIService implements IStarWarsAPIService {
     }
 
     @Nullable
-    private Integer getFilmsFromPlanet(String planetAsString) {
-        if (planetAsString != null) {
+    private Integer getFilmsFromPlanet(JSONObject planetJson) {
+        if (planetJson != null) {
             try {
-                JSONObject planetJson = new JSONObject(planetAsString);
                 JSONArray results = planetJson.getJSONArray("results");
                 if (results.length() > 0) {
                     JSONArray films = results.getJSONObject(0).getJSONArray("films");
@@ -93,10 +93,13 @@ public class StarWarsAPIService implements IStarWarsAPIService {
     private String getEncodedUrl(String planetName) {
         try {
             String encodedName = URLEncoder.encode(planetName, "UTF-8");
-            return String.format(url, encodedName);
+
+            return String.format(SWAPI_URL, encodedName);
         } catch (UnsupportedEncodingException e) {
-            log.error(String.format("Error to encode planet name [%s]", planetName), e);
-            return null;
+            log.error(e.getMessage(), e);
+        } catch (IllegalFormatException e) {
+            log.error(e.getMessage(), e);
         }
+        return null;
     }
 }
