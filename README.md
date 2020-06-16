@@ -39,7 +39,7 @@ Exemplos de requisição:
 curl -X POST "http://localhost:8080/api/planets" -H "Content-Type: application/json" -d "{ \"climate\": \"temperate\", \"name\": \"Alderaan\", \"terrain\": \"grasslands, mountains\"}"
 ```
 
-- Para listar os planetas é opcional enviar a página (*page*) e a quantidade de planetas por página (*size*), os valores *default* são *page*=0 e *size*=10
+- Para listar os planetas é opcional enviar a página (*page*) e a quantidade de planetas por página (*size*), os valores *default* são *page*=0 e *size*=10. O resultado é ordenado em ordem crescente pelo nome.
 ```
 curl -X GET "http://localhost:8080/api/planets?page=0&size=10"
 ```
