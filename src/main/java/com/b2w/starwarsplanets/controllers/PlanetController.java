@@ -31,7 +31,7 @@ public class PlanetController {
     }
 
     @ApiOperation(value = "List all planets in the data base",
-            notes = "The result is sorted descending by name")
+            notes = "The result is sorted ascending by name")
     @GetMapping(params = { "page", "size" })
     public Page<Planet> listPlanets(
             @RequestParam(defaultValue = "0") Integer page,

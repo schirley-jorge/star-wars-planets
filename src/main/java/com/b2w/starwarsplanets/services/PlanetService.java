@@ -38,7 +38,7 @@ public class PlanetService implements IPlanetService {
 
     @Override
     public Page<Planet> listPlanet(int page, int size) {
-        Pageable paging = PageRequest.of(page, size, Sort.by("name"));
+        Pageable paging = PageRequest.of(page, size, Sort.by("name").ascending());
         Page<Planet> result = mongoRepository.findAll(paging);
 
         return result.map(planet -> setNumberOfFilms(planet));
