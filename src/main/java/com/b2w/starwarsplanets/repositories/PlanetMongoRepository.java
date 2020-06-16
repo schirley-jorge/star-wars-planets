@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 public interface PlanetMongoRepository extends MongoRepository<Planet, String> {
-    Planet findByName(String name);
+    Planet findByNameIgnoreCase(String name);
 }

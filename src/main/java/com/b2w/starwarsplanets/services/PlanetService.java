@@ -29,11 +29,11 @@ public class PlanetService implements IPlanetService {
 
     @Override
     public Planet createPlanet(Planet planet) {
-        ValidationUtil.checkAlreadyExist(mongoRepository.findByName(planet.getName()));
+        ValidationUtil.checkAlreadyExist(mongoRepository.findByNameIgnoreCase(planet.getName()));
 
-        setNumberOfFilms(planet);
+        Planet planetSaved = mongoRepository.save(planet);
 
-        return mongoRepository.save(planet);
+        return setNumberOfFilms(planetSaved);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class PlanetService implements IPlanetService {
 
     @Nullable @Override
     public Planet findByName(String name) {
-        Planet planet = mongoRepository.findByName(name);
+        Planet planet = mongoRepository.findByNameIgnoreCase(name);
 
         if (planet != null) {
             return setNumberOfFilms(planet);

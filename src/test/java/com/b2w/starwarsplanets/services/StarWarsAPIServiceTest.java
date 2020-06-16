@@ -5,12 +5,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.json.JSONException;
 import org.junit.jupiter.api.*;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,9 +37,9 @@ public class StarWarsAPIServiceTest {
     @Nested
     class GetNumberOfFims {
 
-        @DisplayName("When http status code error should return null")
+        @DisplayName("When status code is error should return null")
         @Test
-        public void whenStatusCodeErrorShouldReturnNull() throws IOException {
+        public void whenStatusCodeIsErrorShouldReturnNull() throws IOException {
             int statusCodeError = 400;
             Planet planet = new Planet();
             planet.setName("name");
@@ -67,8 +63,6 @@ public class StarWarsAPIServiceTest {
             int statusCodeOk = 200;
             Planet planet = new Planet();
             planet.setName("name");
-
-//            @Mock private HttpEntity entity;
 
             CloseableHttpResponse responseMock = mock(CloseableHttpResponse.class);
             StatusLine statusLineMock = mock(StatusLine.class);
@@ -100,13 +94,13 @@ public class StarWarsAPIServiceTest {
             when(statusLineMock.getStatusCode()).thenReturn(statusCodeOk);
             when(responseMock.getEntity()).thenReturn(entityMock);
 
-            String result = "{\"results\":[{\"films\":[\"films/1/\",\"films/6/\"]}]}";
+            String result = "{\"count\":1,\"results\":[{\"name\":\"name\",\"films\":[\"films/1/\",\"films/6/\"]}]}";
             InputStream stream = new ByteArrayInputStream(result.getBytes());
             when(entityMock.getContent()).thenReturn(stream);
 
             Integer films = swapiService.getNumberOfFilms(planet);
 
-            assertEquals(films, 2);
+            assertEquals(2, films);
             verify(responseMock, times(1)).getEntity();
         }
     }

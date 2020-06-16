@@ -44,7 +44,7 @@ public class StarWarsAPIService implements IStarWarsAPIService {
     @Override
     public Integer getNumberOfFilms(Planet planet) {
         JSONObject planetJson = findPlanet(getEncodedUrl(planet.getName()));
-        return getFilmsFromPlanet(planetJson);
+        return getFilmsFromPlanet(planetJson, planet.getName());
     }
 
     @Nullable
@@ -73,13 +73,19 @@ public class StarWarsAPIService implements IStarWarsAPIService {
     }
 
     @Nullable
-    private Integer getFilmsFromPlanet(JSONObject planetJson) {
+    private Integer getFilmsFromPlanet(JSONObject planetJson, String planetName) {
         if (planetJson != null) {
             try {
+                int count = planetJson.getInt("count");
                 JSONArray results = planetJson.getJSONArray("results");
-                if (results.length() > 0) {
-                    JSONArray films = results.getJSONObject(0).getJSONArray("films");
-                    return films.length();
+
+                for(int i = 0; i < count; i++) {
+                    String name = results.getJSONObject(i).getString("name");
+
+                    if (name.equalsIgnoreCase(planetName)) {
+                        JSONArray films = results.getJSONObject(i).getJSONArray("films");
+                        return films.length();
+                    }
                 }
             } catch (JSONException e) {
                 log.error("Error to parser planet", e);

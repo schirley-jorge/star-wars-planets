@@ -40,12 +40,12 @@ public class PlanetServiceTest {
             Planet planet = new Planet();
             planet.setName("test");
 
-            when(repositoryMock.findByName("test")).thenReturn(planet);
+            when(repositoryMock.findByNameIgnoreCase("test")).thenReturn(planet);
             Exception exception = assertThrows(PlanetAlreadyExistException.class, () ->
                     planetService.createPlanet(planet));
         }
 
-        @DisplayName("when planet already exists should throw PlanetAlreadyExistException")
+        @DisplayName("when there is no film the film attribute should be null")
         @Test
         public void whenThereIsNoFilmAttributeFilmsShouldBeNull() {
             Planet resource = new Planet();
@@ -54,14 +54,14 @@ public class PlanetServiceTest {
             resource.setTerrain("Dessert");
 
             Planet expectedPlanet = new Planet();
-            expectedPlanet.setId("qualquer id");
+            expectedPlanet.setId("anyId");
             expectedPlanet.setName(resource.getName());
             expectedPlanet.setClimate(resource.getClimate());
             expectedPlanet.setTerrain(resource.getTerrain());
             expectedPlanet.setFilms(null);
 
-            when(repositoryMock.findByName("test")).thenReturn(null);
-            when(swapiServiceMock.getNumberOfFilms(resource)).thenReturn(null);
+            when(repositoryMock.findByNameIgnoreCase("test")).thenReturn(null);
+            when(swapiServiceMock.getNumberOfFilms(expectedPlanet)).thenReturn(null);
             when(repositoryMock.save(resource)).thenReturn(expectedPlanet);
 
             Planet result = planetService.createPlanet(resource);
@@ -81,13 +81,13 @@ public class PlanetServiceTest {
             resource.setTerrain("Dessert");
 
             Planet expectedPlanet = new Planet();
-            expectedPlanet.setId("qualquer id");
+            expectedPlanet.setId("anyId");
             expectedPlanet.setName(resource.getName());
             expectedPlanet.setClimate(resource.getClimate());
             expectedPlanet.setTerrain(resource.getTerrain());
             expectedPlanet.setFilms(films);
 
-            when(repositoryMock.findByName(name)).thenReturn(null);
+            when(repositoryMock.findByNameIgnoreCase(name)).thenReturn(null);
             when(swapiServiceMock.getNumberOfFilms(resource)).thenReturn(films);
             when(repositoryMock.save(resource)).thenReturn(expectedPlanet);
 
@@ -176,7 +176,7 @@ public class PlanetServiceTest {
         public void whenPlanetIsNotFoundShouldReturnNull() {
             String name = "name";
 
-            when(repositoryMock.findByName(name)).thenReturn(null);
+            when(repositoryMock.findByNameIgnoreCase(name)).thenReturn(null);
 
             Planet result = planetService.findByName(name);
 
@@ -191,13 +191,13 @@ public class PlanetServiceTest {
             int films = 1;
 
             Planet planet = new Planet();
-            planet.setId("qualquer");
+            planet.setId("anyId");
             planet.setName(name);
             planet.setClimate("Arid");
             planet.setTerrain("Dessert");
             planet.setFilms(films);
 
-            when(repositoryMock.findByName(name)).thenReturn(planet);
+            when(repositoryMock.findByNameIgnoreCase(name)).thenReturn(planet);
             when(swapiServiceMock.getNumberOfFilms(planet)).thenReturn(films);
 
             Planet result = planetService.findByName(name);
@@ -214,7 +214,7 @@ public class PlanetServiceTest {
         @DisplayName("Should delete planet from the database")
         @Test
         public void whenRequestDeleteShouldDeletePlanetFromDatabase() throws Exception {
-            String id = "teste";
+            String id = "test";
 
             doAnswer((i) -> {
                 assertTrue(id.equals(i.getArgument(0)));
