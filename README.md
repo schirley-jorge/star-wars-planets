@@ -30,7 +30,7 @@ A aplicação poderá ser acessada a partir da url *http://localhost:8080/*
 - [JUnit 5](https://junit.org/junit5/docs/current/user-guide/)
 
 ## Documentação da API
-Com a aplicação em execução, a especificação da API no Swagger pode ser acessada pelo [link](http://localhost:8080/swagger-ui.html). Também é possível testar a aplicação enviando requições pelo próprio Swagger.
+Com a aplicação em execução, a especificação da API no Swagger pode ser acessada pelo [link](http://localhost:8080/swagger-ui.html). Também é possível testar a aplicação enviando requisições pelo próprio Swagger.
 
 Exemplos de requisição:
 
@@ -55,7 +55,7 @@ curl -X DELETE "http://localhost:8080/api/planets/5ee0105d8d9996515be1f837"
 ```
 
 ## Abordagem
-Para armazenar as informações dos planetas foi utilizado o banco NoSQL *MongoDB*. Para evitar ir a API pública todas as vezes que um planeta é recuperado, foi utlizado um mecanismo de *cache* implementado via *Redis*, sendo assim, a informação de quantidade de aparições dos planetas em filmes é armazenada na cache melhorando a *performance* da recuperação dessa informação, consequentemente melhora também a recuperação das informações do planeta.
+Para armazenar as informações dos planetas foi utilizado o banco NoSQL *MongoDB*. Para evitar ir a API pública todas as vezes que um planeta é recuperado, foi utlizado um mecanismo de *cache* implementado via *Redis*, sendo assim, a informação de quantidade de aparições dos planetas em filmes é armazenada na *cache* melhorando a *performance* de recuperação dessa informação, consequentemente melhora também a *performance* de recuperação das informações do planeta.
 
 ## Testes
 
